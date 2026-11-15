@@ -100,6 +100,42 @@ section {
   color: #45524a;
 }
 
+.kartu-aksi {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tombol-ubah,
+.tombol-hapus {
+  border-radius: 6px;
+  border: 1px solid;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.tombol-ubah {
+  background-color: #e8f3ec;
+  border-color: #c6d3c9;
+  color: #26653a;
+}
+
+.tombol-ubah:hover {
+  background-color: #d9ebdf;
+}
+
+.tombol-hapus {
+  background-color: #fdecec;
+  border-color: #f5c6cb;
+  color: #a61e24;
+}
+
+.tombol-hapus:hover {
+  background-color: #f9d9db;
+}
+
 .kartu-keluhan {
   font-style: italic;
 }
@@ -180,6 +216,26 @@ section {
 
 .tombol-tambah:hover {
   background-color: #26653a;
+}
+
+.form-aksi {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tombol-batal {
+  background-color: #f2f4f3;
+  border: 1px solid #d9e3da;
+  border-radius: 6px;
+  padding: 10px 18px;
+  font-size: 14px;
+  color: #45524a;
+  cursor: pointer;
+}
+
+.tombol-batal:hover {
+  background-color: #e6eae7;
 }
 
 @media (max-width: 640px) {

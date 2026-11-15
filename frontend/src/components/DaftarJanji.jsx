@@ -1,6 +1,6 @@
 import KartuJanjiTemu from './KartuJanjiTemu'
 
-function DaftarJanji({ daftar }) {
+function DaftarJanji({ daftar, onUbah, onHapus }) {
   return (
     <section className="daftar-janji">
       <h2>Daftar Janji Temu</h2>
@@ -8,7 +8,12 @@ function DaftarJanji({ daftar }) {
         <p className="data-kosong">Belum ada data Janji Temu</p>
       ) : (
         daftar.map((janji) => (
-          <KartuJanjiTemu key={janji.id} janji={janji} />
+          <KartuJanjiTemu
+            key={janji.id}
+            janji={janji}
+            onUbah={onUbah}
+            onHapus={onHapus}
+          />
         ))
       )}
     </section>

@@ -1,4 +1,4 @@
-function KartuJanjiTemu({ janji }) {
+function KartuJanjiTemu({ janji, onUbah, onHapus }) {
   const kelasStatus =
     janji.status === 'Konfirmasi' ? 'status-konfirmasi' : 'status-menunggu'
 
@@ -16,6 +16,14 @@ function KartuJanjiTemu({ janji }) {
       </p>
       <p className="kartu-keluhan">{janji.keluhan}</p>
       <p className="kartu-hp">No. HP: {janji.noHp}</p>
+      <div className="kartu-aksi">
+        <button type="button" className="tombol-ubah" onClick={() => onUbah(janji)}>
+          Ubah
+        </button>
+        <button type="button" className="tombol-hapus" onClick={() => onHapus(janji)}>
+          Hapus
+        </button>
+      </div>
     </div>
   )
 }

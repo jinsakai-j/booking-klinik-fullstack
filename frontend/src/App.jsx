@@ -4,7 +4,12 @@ import RingkasanJanji from './components/RingkasanJanji'
 import FormJanjiTemu from './components/FormJanjiTemu'
 import DaftarJanji from './components/DaftarJanji'
 import TipsKesehatan from './components/TipsKesehatan'
-import { ambilSemuaJanjiTemu, tambahJanjiTemu } from './services/janjiTemu'
+import {
+  ambilSemuaJanjiTemu,
+  tambahJanjiTemu,
+  ubahJanjiTemu,
+  hapusJanjiTemu,
+} from './services/janjiTemu'
 import { daftarDokter } from './data/dokter'
 import './App.css'
 
@@ -13,6 +18,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [errorMuat, setErrorMuat] = useState('')
   const [pesanForm, setPesanForm] = useState('')
+  const [janjiDiedit, setJanjiDiedit] = useState(null)
 
   async function ambilJanji() {
     setLoading(true)
@@ -48,6 +54,49 @@ function App() {
     }
   }
 
+  function mulaiUbah(janji) {
+    setJanjiDiedit(janji)
+    setPesanForm('')
+  }
+
+  async function ubahJanji(id, perubahan) {
+    try {
+      const janjiTerubah = await ubahJanjiTemu(id, {
+        ...perubahan,
+        jam: perubahan.jam.replace(':', '.'),
+      })
+
+      setDaftarJanji(
+        daftarJanji.map((janji) => (janji.id === id ? janjiTerubah : janji)),
+      )
+      setJanjiDiedit(null)
+      setPesanForm('')
+      return true
+    } catch (err) {
+      setPesanForm(err.message || 'Gagal mengubah janji temu')
+      return false
+    }
+  }
+
+  async function hapusJanji(janji) {
+    const setuju = window.confirm(`Hapus janji temu ${janji.namaPasien}?`)
+    if (!setuju) {
+      return
+    }
+
+    try {
+      await hapusJanjiTemu(janji.id)
+      setDaftarJanji(daftarJanji.filter((item) => item.id !== janji.id))
+      setPesanForm('')
+
+      if (janjiDiedit && janjiDiedit.id === janji.id) {
+        setJanjiDiedit(null)
+      }
+    } catch (err) {
+      setPesanForm(err.message || 'Gagal menghapus janji temu')
+    }
+  }
+
   return (
     <div className="app">
       <Header
@@ -62,7 +111,13 @@ function App() {
         </div>
       )}
 
-      <FormJanjiTemu daftarDokter={daftarDokter} onTambah={tambahJanji} />
+      <FormJanjiTemu
+        daftarDokter={daftarDokter}
+        onTambah={tambahJanji}
+        janjiDiedit={janjiDiedit}
+        onUbah={ubahJanji}
+        onBatalUbah={() => setJanjiDiedit(null)}
+      />
 
       {loading && <p className="data-kosong">Memuat data janji temu...</p>}
 
@@ -75,7 +130,13 @@ function App() {
         </div>
       )}
 
-      {!loading && !errorMuat && <DaftarJanji daftar={daftarJanji} />}
+      {!loading && !errorMuat && (
+        <DaftarJanji
+          daftar={daftarJanji}
+          onUbah={mulaiUbah}
+          onHapus={hapusJanji}
+        />
+      )}
 
       <TipsKesehatan />
     </div>

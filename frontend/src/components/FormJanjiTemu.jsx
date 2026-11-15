@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const formAwal = {
   namaPasien: '',
@@ -9,8 +9,30 @@ const formAwal = {
   keluhan: '',
 }
 
-function FormJanjiTemu({ daftarDokter, onTambah }) {
+function FormJanjiTemu({
+  daftarDokter,
+  onTambah,
+  janjiDiedit,
+  onUbah,
+  onBatalUbah,
+}) {
   const [form, setForm] = useState(formAwal)
+  const modeUbah = janjiDiedit !== null
+
+  useEffect(() => {
+    if (janjiDiedit) {
+      setForm({
+        namaPasien: janjiDiedit.namaPasien,
+        noHp: janjiDiedit.noHp,
+        dokter: janjiDiedit.dokter,
+        tanggal: new Date(janjiDiedit.tanggal).toISOString().slice(0, 10),
+        jam: janjiDiedit.jam.replace('.', ':'),
+        keluhan: janjiDiedit.keluhan,
+      })
+    } else {
+      setForm(formAwal)
+    }
+  }, [janjiDiedit])
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -19,7 +41,11 @@ function FormJanjiTemu({ daftarDokter, onTambah }) {
 
   async function handleSubmit(event) {
     event.preventDefault()
-    const berhasil = await onTambah(form)
+
+    const berhasil = modeUbah
+      ? await onUbah(janjiDiedit.id, form)
+      : await onTambah(form)
+
     if (berhasil) {
       setForm(formAwal)
     }
@@ -27,7 +53,7 @@ function FormJanjiTemu({ daftarDokter, onTambah }) {
 
   return (
     <form className="form-janji" onSubmit={handleSubmit}>
-      <h2>Buat Janji Temu</h2>
+      <h2>{modeUbah ? 'Ubah Janji Temu' : 'Buat Janji Temu'}</h2>
       <div className="form-baris">
         <label htmlFor="namaPasien">Nama Pasien</label>
         <input
@@ -105,9 +131,16 @@ function FormJanjiTemu({ daftarDokter, onTambah }) {
           required
         />
       </div>
-      <button type="submit" className="tombol-tambah">
-        Tambah
-      </button>
+      <div className="form-aksi">
+        <button type="submit" className="tombol-tambah">
+          {modeUbah ? 'Simpan Perubahan' : 'Tambah'}
+        </button>
+        {modeUbah && (
+          <button type="button" className="tombol-batal" onClick={onBatalUbah}>
+            Batal
+          </button>
+        )}
+      </div>
     </form>
   )
 }
