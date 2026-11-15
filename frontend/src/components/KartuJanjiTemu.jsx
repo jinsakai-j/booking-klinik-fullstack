@@ -2,6 +2,8 @@ function KartuJanjiTemu({ janji }) {
   const kelasStatus =
     janji.status === 'Konfirmasi' ? 'status-konfirmasi' : 'status-menunggu'
 
+  const tanggal = new Date(janji.tanggal).toISOString().slice(0, 10)
+
   return (
     <div className="kartu-janji">
       <div className="kartu-atas">
@@ -10,7 +12,7 @@ function KartuJanjiTemu({ janji }) {
       </div>
       <p className="kartu-dokter">{janji.dokter}</p>
       <p className="kartu-jadwal">
-        {janji.tanggal} - {janji.jam}
+        {tanggal} - {janji.jam}
       </p>
       <p className="kartu-keluhan">{janji.keluhan}</p>
       <p className="kartu-hp">No. HP: {janji.noHp}</p>

@@ -17,10 +17,12 @@ function FormJanjiTemu({ daftarDokter, onTambah }) {
     setForm({ ...form, [name]: value })
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
-    onTambah(form)
-    setForm(formAwal)
+    const berhasil = await onTambah(form)
+    if (berhasil) {
+      setForm(formAwal)
+    }
   }
 
   return (
