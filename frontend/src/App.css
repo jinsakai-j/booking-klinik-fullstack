@@ -1,0 +1,283 @@
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+section {
+  margin-bottom: 18px;
+}
+
+.header {
+  background-color: #2f7c47;
+  color: #ffffff;
+  padding: 20px 24px;
+  border-radius: 8px;
+}
+
+.header h1 {
+  margin: 0 0 6px;
+  font-size: 26px;
+}
+
+.header p {
+  margin: 0;
+  font-size: 15px;
+}
+
+.ringkasan {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.ringkasan-item {
+  flex: 1 1 200px;
+  background-color: #ffffff;
+  border: 1px solid #d9e3da;
+  border-radius: 8px;
+  padding: 14px 18px;
+}
+
+.ringkasan-label {
+  display: block;
+  font-size: 14px;
+  color: #5b6b60;
+  margin-bottom: 4px;
+}
+
+.ringkasan-angka {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2f7c47;
+}
+
+.kartu-janji {
+  background-color: #ffffff;
+  border: 1px solid #d9e3da;
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+
+.kartu-atas {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.kartu-atas h3 {
+  margin: 0;
+  font-size: 17px;
+  color: #1f2933;
+}
+
+.status {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.status-konfirmasi {
+  background-color: #d9f0e0;
+  color: #2f7c47;
+}
+
+.status-menunggu {
+  background-color: #fdf0cf;
+  color: #8a6100;
+}
+
+.kartu-dokter,
+.kartu-jadwal,
+.kartu-keluhan,
+.kartu-hp {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: #45524a;
+}
+
+.kartu-keluhan {
+  font-style: italic;
+}
+
+.daftar-janji h2 {
+  margin: 24px 0 12px;
+  font-size: 20px;
+  color: #2f7c47;
+}
+
+.data-kosong {
+  background-color: #ffffff;
+  border: 1px dashed #c6d3c9;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+  color: #7a8a7f;
+}
+
+.form-janji {
+  background-color: #ffffff;
+  border: 1px solid #d9e3da;
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+
+.form-janji h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  color: #2f7c47;
+}
+
+.form-baris {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.form-baris label {
+  font-size: 14px;
+  color: #45524a;
+}
+
+.form-baris input,
+.form-baris select,
+.form-baris textarea {
+  font-family: inherit;
+  font-size: 14px;
+  padding: 9px 11px;
+  border: 1px solid #c6d3c9;
+  border-radius: 6px;
+  background-color: #ffffff;
+}
+
+.form-sejajar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.form-sejajar .form-baris {
+  flex: 1 1 220px;
+}
+
+.tombol-tambah {
+  background-color: #2f7c47;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 22px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.tombol-tambah:hover {
+  background-color: #26653a;
+}
+
+@media (max-width: 640px) {
+  .header h1 {
+    font-size: 22px;
+  }
+
+  .ringkasan {
+    flex-direction: column;
+  }
+
+  .ringkasan-item {
+    flex: 1 1 auto;
+  }
+
+  .form-sejajar {
+    flex-direction: column;
+  }
+}
+
+
+.tips-kesehatan {
+  margin-top: 24px;
+}
+
+.tips-kesehatan h2 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  color: #2f7c47;
+}
+
+.tips-subjudul {
+  margin: 0 0 14px;
+  font-size: 14px;
+  color: #5b6b60;
+}
+
+.tips-status {
+  background-color: #ffffff;
+  border: 1px solid #d9e3da;
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin: 0;
+  font-size: 14px;
+  color: #45524a;
+}
+
+.tips-error {
+  background-color: #ffffff;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  padding: 16px 18px;
+  text-align: center;
+}
+
+.tips-error p {
+  margin: 0 0 10px;
+  color: #a61e24;
+  font-size: 14px;
+}
+
+.tombol-coba-lagi {
+  background-color: #2f7c47;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.tombol-coba-lagi:hover {
+  background-color: #26653a;
+}
+
+.tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tips-card {
+  background-color: #ffffff;
+  border: 1px solid #d9e3da;
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+
+.tips-quote {
+  margin: 0 0 8px;
+  font-size: 15px;
+  color: #1f2933;
+  font-style: italic;
+}
+
+.tips-author {
+  margin: 0;
+  text-align: right;
+  font-size: 13px;
+  color: #5b6b60;
+}
