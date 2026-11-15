@@ -1,0 +1,72 @@
+@host = http://localhost:3000
+@contentType = application/json
+
+### Ambil semua janji temu
+GET {{host}}/janji-temu
+
+### Ambil satu janji temu
+GET {{host}}/janji-temu/1
+
+### Ambil janji temu yang tidak ada (404)
+GET {{host}}/janji-temu/99
+
+### Tambah janji temu baru
+POST {{host}}/janji-temu
+Content-Type: {{contentType}}
+
+{
+  "namaPasien": "Fajar Nugroho",
+  "noHp": "081277665544",
+  "dokter": "dr. Amira Larasati, Sp.A",
+  "tanggal": "2026-11-20",
+  "jam": "14.00",
+  "keluhan": "Kontrol demam berulang"
+}
+
+### Tambah janji temu dengan data tidak valid (400)
+POST {{host}}/janji-temu
+Content-Type: {{contentType}}
+
+{
+  "namaPasien": "Al",
+  "noHp": "123",
+  "dokter": "x",
+  "tanggal": "kemarin",
+  "jam": "25.99",
+  "keluhan": "x"
+}
+
+### Tambah janji temu dengan jadwal bentrok (409)
+POST {{host}}/janji-temu
+Content-Type: {{contentType}}
+
+{
+  "namaPasien": "Tes Bentrok",
+  "noHp": "081234567890",
+  "dokter": "dr. Amira Larasati, Sp.A",
+  "tanggal": "2026-11-17",
+  "jam": "09.00",
+  "keluhan": "Tes jadwal bentrok"
+}
+
+### Ubah janji temu
+PATCH {{host}}/janji-temu/2
+Content-Type: {{contentType}}
+
+{
+  "status": "Konfirmasi"
+}
+
+### Ubah janji temu yang tidak ada (404)
+PATCH {{host}}/janji-temu/99
+Content-Type: {{contentType}}
+
+{
+  "status": "Konfirmasi"
+}
+
+### Hapus janji temu
+DELETE {{host}}/janji-temu/3
+
+### Hapus janji temu yang sudah dihapus (404)
+DELETE {{host}}/janji-temu/3
