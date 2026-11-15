@@ -8,13 +8,12 @@ Project ini adalah versi React dari tugas web sebelumnya. Frontend-nya
 dibuat pakai Vite, jadi untuk menjalankan cukup install dependency lalu
 `npm run dev`, nanti terbuka di http://localhost:5173.
 
-Data yang disimpan berupa data pasien (nama, NIK, tanggal lahir, jenis
-kelamin, nomor HP) dan data appointment (dokter, tanggal, jam, metode
-bayar, keluhan, dan status).
+Data yang disimpan berupa data pasien (nama dan nomor HP) dan data
+appointment (dokter, tanggal, jam, keluhan, dan status).
 
-Untuk tahap ini baru dibuat kerangka project React, isinya masih judul
-aplikasi saja. Component dan fitur lainnya ditambahkan di update
-berikutnya.
+Untuk update terakhir, aplikasi sudah lengkap. Data janji temu diambil dari
+API backend NestJS, jadi frontend dan backend dijalankan bareng (backend di
+http://localhost:3000).
 
 Rajaa Azharul Hanafi - 103022400116
 
@@ -31,3 +30,19 @@ Link repository: https://github.com/jinsakai-j/booking-klinik-frontend
 Ditambahkan fitur konsumsi API untuk menampilkan "Tips Kesehatan". Endpoint yang dipakai: https://dummyjson.com/quotes?limit=5 (diambil pakai fetch()). Dipilih karena datanya sederhana, gratis, mendukung CORS, relevan buat tampilan tambahan di aplikasi klinik.
 
 Implementasi: komponen src/components/TipsKesehatan.jsx pakai useEffect untuk fetch saat komponen dimount, useState untuk data, loading, dan error. Saat loading ditampilkan "Memuat tips kesehatan...". Saat error muncul pesan error dan tombol "Coba Lagi" (interaksi untuk mengulang pengambilan data). Saat berhasil, data ditampilkan pakai .map() dengan key unik ke dalam kartu. Section ini ditambahkan di App.jsx di bawah DaftarJanjiTemu.
+
+
+## Update week9
+
+Frontend disambungkan ke backend NestJS. Data janji temu sekarang diambil dari http://localhost:3000/janji-temu, bukan dari file data dummy lagi.
+
+Perubahannya:
+
+- `src/services/janjiTemu.js` berisi fungsi fetch untuk ambil, tambah, ubah, dan hapus janji temu
+- `App.jsx` mengambil data dari API saat halaman dibuka, ada tampilan loading dan pesan error dengan tombol "Coba Lagi"
+- Form tambah mengirim POST, tiap kartu punya tombol Ubah (PATCH) dan Hapus (DELETE pakai konfirmasi)
+- `src/data/janjiTemu.js` dihapus karena data sudah dari backend
+
+Link repository: https://github.com/jinsakai-j/booking-klinik-fullstack
+
+Screenshot alur integrasi ada di `docs/screenshots/tugas9/integrasi/`.

@@ -1,4 +1,3 @@
-import { PartialType } from '@nestjs/mapped-types';
 import {
   IsDateString,
   IsIn,
@@ -43,5 +42,3 @@ export class CreateJanjiTemuDto {
   })
   status?: StatusJanji;
 }
-
-export class UpdateJanjiTemuDto extends PartialType(CreateJanjiTemuDto) {}
