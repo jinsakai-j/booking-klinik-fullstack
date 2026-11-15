@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateJanjiTemuDto } from './dto/create-janji-temu.dto.js';
 import { UpdateJanjiTemuDto } from './dto/update-janji-temu.dto.js';
 import { JanjiTemu } from './entities/janji-temu.entity.js';
@@ -41,6 +45,20 @@ export class JanjiTemuService {
   private idBerikutnya = 4;
 
   create(createJanjiTemuDto: CreateJanjiTemuDto): JanjiTemu {
+    const jadwalDipakai = this.daftarJanji.some(
+      (janji) =>
+        janji.dokter === createJanjiTemuDto.dokter &&
+        janji.tanggal.toISOString().slice(0, 10) ===
+          createJanjiTemuDto.tanggal &&
+        janji.jam === createJanjiTemuDto.jam,
+    );
+
+    if (jadwalDipakai) {
+      throw new ConflictException(
+        'Jadwal dokter tersebut sudah dipesan pada tanggal dan jam yang sama',
+      );
+    }
+
     const janjiBaru: JanjiTemu = {
       id: this.idBerikutnya++,
       namaPasien: createJanjiTemuDto.namaPasien,
@@ -60,14 +78,21 @@ export class JanjiTemuService {
     return this.daftarJanji;
   }
 
-  findOne(id: number): JanjiTemu | undefined {
-    return this.daftarJanji.find((janji) => janji.id === id);
+  findOne(id: number): JanjiTemu {
+    const janji = this.daftarJanji.find((item) => item.id === id);
+
+    if (!janji) {
+      throw new NotFoundException(`Janji temu dengan id ${id} tidak ditemukan`);
+    }
+
+    return janji;
   }
 
-  update(id: number, updateJanjiTemuDto: UpdateJanjiTemuDto): JanjiTemu | null {
+  update(id: number, updateJanjiTemuDto: UpdateJanjiTemuDto): JanjiTemu {
     const index = this.daftarJanji.findIndex((janji) => janji.id === id);
+
     if (index === -1) {
-      return null;
+      throw new NotFoundException(`Janji temu dengan id ${id} tidak ditemukan`);
     }
 
     const janjiLama = this.daftarJanji[index];
@@ -83,10 +108,11 @@ export class JanjiTemuService {
     return janjiBaru;
   }
 
-  remove(id: number): JanjiTemu | null {
+  remove(id: number): JanjiTemu {
     const index = this.daftarJanji.findIndex((janji) => janji.id === id);
+
     if (index === -1) {
-      return null;
+      throw new NotFoundException(`Janji temu dengan id ${id} tidak ditemukan`);
     }
 
     const [janjiDihapus] = this.daftarJanji.splice(index, 1);
