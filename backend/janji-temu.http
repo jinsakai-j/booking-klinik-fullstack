@@ -4,13 +4,16 @@
 ### Ambil semua janji temu
 GET {{host}}/janji-temu
 
-### Ambil satu janji temu
+### Ambil satu janji temu berdasarkan id
 GET {{host}}/janji-temu/1
 
 ### Ambil janji temu yang tidak ada (404)
 GET {{host}}/janji-temu/99
 
-### Tambah janji temu baru
+### Statistik jumlah janji temu per status
+GET {{host}}/janji-temu/statistik
+
+### Tambah janji temu baru (201)
 POST {{host}}/janji-temu
 Content-Type: {{contentType}}
 
@@ -36,7 +39,7 @@ Content-Type: {{contentType}}
   "keluhan": "x"
 }
 
-### Tambah janji temu dengan jadwal bentrok (409)
+### Tambah janji temu dengan jadwal dokter bentrok (409)
 POST {{host}}/janji-temu
 Content-Type: {{contentType}}
 
@@ -49,8 +52,8 @@ Content-Type: {{contentType}}
   "keluhan": "Tes jadwal bentrok"
 }
 
-### Ubah janji temu
-PATCH {{host}}/janji-temu/2
+### Ubah status janji temu (200)
+PATCH {{host}}/janji-temu/4
 Content-Type: {{contentType}}
 
 {
@@ -65,8 +68,24 @@ Content-Type: {{contentType}}
   "status": "Konfirmasi"
 }
 
-### Hapus janji temu
-DELETE {{host}}/janji-temu/3
+### Hapus janji temu (200)
+DELETE {{host}}/janji-temu/4
 
 ### Hapus janji temu yang sudah dihapus (404)
-DELETE {{host}}/janji-temu/3
+DELETE {{host}}/janji-temu/4
+
+### Buat data untuk bukti persistence
+POST {{host}}/janji-temu
+Content-Type: {{contentType}}
+
+{
+  "namaPasien": "Bukti Permanen",
+  "noHp": "081233344455",
+  "dokter": "dr. Budi Santosa, Sp.PD",
+  "tanggal": "2026-12-01",
+  "jam": "11.00",
+  "keluhan": "Data untuk bukti setelah restart"
+}
+
+### Cek lagi setelah backend di-restart: data tetap ada
+GET {{host}}/janji-temu
