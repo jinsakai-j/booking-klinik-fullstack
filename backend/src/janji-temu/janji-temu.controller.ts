@@ -17,6 +17,11 @@ export class JanjiTemuController {
     return this.janjiTemuService.findAll();
   }
 
+  @Get('statistik')
+  getStatistik() {
+    return this.janjiTemuService.getStatistik();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.janjiTemuService.findOne(+id);

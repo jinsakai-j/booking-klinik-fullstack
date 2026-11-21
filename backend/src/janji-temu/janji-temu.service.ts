@@ -54,6 +54,25 @@ export class JanjiTemuService {
     return daftarJanji as JanjiTemu[];
   }
 
+  async getStatistik() {
+    const [total, perStatus] = await Promise.all([
+      this.prisma.janjiTemu.count(),
+      this.prisma.janjiTemu.groupBy({
+        by: ['status'],
+        _count: { status: true },
+        orderBy: { status: 'asc' },
+      }),
+    ]);
+
+    return {
+      total,
+      perStatus: perStatus.map((item) => ({
+        status: item.status,
+        jumlah: item._count.status,
+      })),
+    };
+  }
+
   async findOne(id: number): Promise<JanjiTemu> {
     const janji = await this.prisma.janjiTemu.findUnique({ where: { id } });
 
