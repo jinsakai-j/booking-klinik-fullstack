@@ -33,8 +33,10 @@ booking-klinik-fullstack/
 │     ├─ data/        data dokter
 │     └─ services/    pemanggilan API janji temu
 ├─ backend/           API NestJS
+│  ├─ prisma/         schema, migrasi, dan seed
 │  └─ src/
-│     └─ janji-temu/  module, controller, service, dto, entity
+│     ├─ janji-temu/  module, controller, service, dto, entity
+│     └─ prisma/      PrismaService (provider global)
 └─ docs/screenshots/  screenshot pengujian dan integrasi
 ```
 
@@ -42,15 +44,21 @@ booking-klinik-fullstack/
 
 - Frontend: React, Vite, CSS
 - Backend: NestJS, TypeScript, class-validator
-- Data disimpan sementara di array memori (belum pakai database)
+- Database: PostgreSQL lokal, diakses lewat Prisma ORM
 
 ## Cara menjalankan
+
+Siapkan PostgreSQL lokal dulu dan buat database `booking_klinik`.
+Salin `backend/.env.example` jadi `backend/.env`, lalu isi `DATABASE_URL`
+sesuai username dan password Postgres masing-masing.
 
 Jalankan backend dulu:
 
 ```bash
 cd backend
 npm install
+npx prisma migrate dev
+npm run seed
 npm run start:dev
 ```
 
@@ -63,8 +71,8 @@ npm run dev
 ```
 
 Backend jalan di http://localhost:3000 dan frontend di
-http://localhost:5173. Data janji temu disimpan di memori, jadi kalau
-backend di-restart datanya kembali ke data awal.
+http://localhost:5173. Data janji temu disimpan permanen di PostgreSQL,
+jadi tetap ada walaupun backend di-restart.
 
 ## Endpoint API
 
@@ -72,6 +80,7 @@ backend di-restart datanya kembali ke data awal.
 | ------ | ---------------- | ------------------------------------------------------- |
 | GET    | `/janji-temu`    | Ambil semua janji temu                                  |
 | GET    | `/janji-temu/:id`| Ambil satu janji temu, 404 kalau tidak ada              |
+| GET    | `/janji-temu/statistik` | Statistik jumlah janji temu per status           |
 | POST   | `/janji-temu`    | Tambah janji temu, 400 kalau tidak valid, 409 kalau bentrok |
 | PATCH  | `/janji-temu/:id`| Ubah janji temu, 404 kalau tidak ada                     |
 | DELETE | `/janji-temu/:id`| Hapus janji temu, 404 kalau tidak ada                    |
@@ -156,5 +165,86 @@ Pengujian pakai REST Client di VS Code, file request-nya ada di
 ### Hasil hapus janji temu
 
 ![Hasil hapus](docs/screenshots/tugas9/integrasi/06-hasil-hapus-janji.png)
+
+## Tugas 10 - REST API + PostgreSQL + Prisma
+
+Penyimpanan data dipindah dari array memori ke PostgreSQL. Model utamanya
+cuma satu, `JanjiTemu`, field-nya disesuaikan dengan data janji temu klinik.
+Migrasi awal dijalankan pakai `npx prisma migrate dev`, lalu tabelnya diisi
+3 data contoh lewat `npm run seed`. `PrismaService` dibuat sebagai provider
+global dan dipakai di `JanjiTemuService` — kode controller nggak diubah.
+
+### Migrasi awal dan tabel di database
+
+![Migrasi awal](docs/screenshots/tugas10/01-migrasi-awal-dan-tabel-database.png)
+
+### Seed data janji temu
+
+![Seed data](docs/screenshots/tugas10/02-seed-data-janji-temu.png)
+
+### Pengujian endpoint dengan Prisma
+
+Masih pakai REST Client, request-nya ada di `backend/janji-temu.http`.
+
+#### GET semua janji temu
+
+![GET semua](docs/screenshots/tugas10/03-get-semua-janji-temu.png)
+
+#### GET satu janji temu
+
+![GET satu](docs/screenshots/tugas10/04-get-satu-janji-temu.png)
+
+#### GET janji temu tidak ada (404)
+
+![GET 404](docs/screenshots/tugas10/05-get-tidak-ditemukan-404.png)
+
+#### Statistik jumlah janji temu per status
+
+![Statistik](docs/screenshots/tugas10/06-statistik-janji-temu.png)
+
+#### POST tambah janji temu (201)
+
+![POST 201](docs/screenshots/tugas10/07-post-janji-temu-201.png)
+
+#### POST data tidak valid (400)
+
+![POST 400](docs/screenshots/tugas10/08-post-validasi-400.png)
+
+#### POST jadwal dokter bentrok (409)
+
+![POST 409](docs/screenshots/tugas10/09-post-jadwal-bentrok-409.png)
+
+#### PATCH ubah janji temu (200)
+
+![PATCH 200](docs/screenshots/tugas10/10-patch-janji-temu-200.png)
+
+#### PATCH janji temu tidak ada (404)
+
+![PATCH 404](docs/screenshots/tugas10/11-patch-tidak-ditemukan-404.png)
+
+#### DELETE hapus janji temu (200)
+
+![DELETE 200](docs/screenshots/tugas10/12-delete-janji-temu-200.png)
+
+#### DELETE janji temu yang sudah dihapus (404)
+
+![DELETE 404](docs/screenshots/tugas10/13-delete-tidak-ditemukan-404.png)
+
+### Bukti data tersimpan permanen
+
+Data "Bukti Permanen" dibuat lewat POST, backend di-restart, lalu diambil
+lagi dengan GET — datanya masih ada.
+
+![POST bukti persistence](docs/screenshots/tugas10/14-post-bukti-persistence.png)
+
+![Data setelah restart](docs/screenshots/tugas10/15-data-tetap-ada-setelah-restart.png)
+
+### Tampilan desktop
+
+![Tampilan desktop](docs/screenshots/tugas10/16-tampilan-desktop.png)
+
+### Tampilan mobile
+
+![Tampilan mobile](docs/screenshots/tugas10/17-tampilan-mobile.png)
 
 Rajaa Azharul Hanafi - 103022400116
